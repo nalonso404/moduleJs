@@ -47,27 +47,25 @@ let orderAlphabetically = (array) => {
 
 //turn duration to min
 
-const hoursToMinutes = array => array[0]*60 + array[1]*1;
-      
-const turnHoursToMinutes = (array) => {
-  
-    let movies =[...array]
-  
-    let moviesNumbers = movies.map(function(movie){
-        let duration = movie.duration
-        
-        if(!duration.includes("h")){
-            duration = "0h " + duration
-        } else if(!duration.includes("min")){
-            duration += movie.duration + " 00min"
-        } 
+const hoursToMinutes = array => array[0]*60 + array[1]*1 
 
-        movie.duration = hoursToMinutes(duration.match(/\d+/g))
-        return movie
-    })
-  
-    return moviesNumbers
-  }
+const turnHoursToMinutes = (array)=> {
+  let moviesCopy =JSON.parse(JSON.stringify(array))
+  let movies = moviesCopy.map(function(movie){
+  let duration = ((movie.duration).split(' '))
+  let newArray=[];
+   for(let i=0; i< duration.length; i++){
+     if (duration[i].charCodeAt() <= '57' && duration[i].charCodeAt()>='33'){
+       newArray.push(parseInt(duration[i],10))
+     }
+   }
+  movie.duration = hoursToMinutes(newArray)
+    return movie
+  })
+  return movies
+}
+turnHoursToMinutes(movies)
+
 
   const orderByDuration = array => {
       const alphabetical = array.sort((a,b)=>{
